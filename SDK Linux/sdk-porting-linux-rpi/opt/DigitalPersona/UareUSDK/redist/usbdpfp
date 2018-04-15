@@ -1,0 +1,74 @@
+#! /bin/sh
+# This script will check if the DigitalPersona fingerprint sensor kernel module
+# is installed in 
+#  /lib/modules/<current kernel version>/kernel/drivers/biometric/
+#
+# If not, it will see if the kernel source is available in 
+#  /opt/DigitalPersona/UareUSDK/Linux/drivers/source/usbdpfp
+#
+# If the source if available, it will build it for the current running kernel.
+#
+# chkconfig: 2345 50 50
+#
+### BEGIN INIT INFO
+# Provides:          usbdpfp
+# Required-Start:    
+# Required-Stop:
+# Default-Start: 2345
+# Default-Stop:
+# Short-Description: Build (if needed) and start DigitalPersona figerprint reader device driver
+### END INIT INFO
+
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+
+build_driver() {
+  if [ ! -f /lib/modules/`uname -r`/kernel/drivers/biometric/mod_usbdpfp.ko ]; then
+    echo "=========================================================================="   
+    echo "Building /opt/DigitalPersona/UareUSDK/Linux/drivers/source/usbdpfp - `date`"   
+    if [ -f /opt/DigitalPersona/UareUSDK/Linux/drivers/source/usbdpfp/Makefile ]; then
+      cd /opt/DigitalPersona/UareUSDK/Linux/drivers/source/usbdpfp
+      make    2>&1
+      if [ -f mod_usbdpfp.ko ]; then
+        if [ ! -d /lib/modules/`uname -r`/kernel/drivers/biometric ]; then
+          mkdir /lib/modules/`uname -r`/kernel/drivers/biometric
+        fi
+        cp mod_usbdpfp.ko /lib/modules/`uname -r`/kernel/drivers/biometric/.
+        /sbin/depmod
+        /sbin/modprobe mod_usbdpfp
+      else
+        echo "Error: Failed to build the kernel driver from the source in"   
+        echo "  /opt/DigitalPersona/UareUSDK/Linux/drivers/source/usbdpfp"   
+        echo ""   
+        exit 1
+      fi
+    else
+      echo "Error: Kernel driver source code is not available at"   
+      echo "  /opt/DigitalPersona/UareUSDK/Linux/drivers/source/usbdpfp"   
+      echo ""   
+      exit 1
+    fi
+    echo "Build log written to /var/log/usbdpfp.log"
+  else
+    /sbin/modprobe mod_usbdpfp
+  fi
+}
+
+case "$1" in
+  start)
+    (build_driver 2>&1) | tee -a /var/log/usbdpfp.log
+    ;;
+  restart|reload|force-reload)
+    echo "Error: argument '$1' not supported" >&2
+    exit 3
+    ;;
+  stop)
+    /sbin/modprobe -r mod_usbdpfp
+    ;;
+  *)
+    echo "Usage: $0 start|stop" >&2
+    exit 3
+    ;;
+esac
+
+

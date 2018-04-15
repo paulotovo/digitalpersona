@@ -1,0 +1,155 @@
+#!/bin/sh
+
+# This script can be used to uninstall DigitalPersona U.are.U SDK
+# packages.
+
+# Check root
+if [ "`whoami`" != "root" ]; then
+  echo "You must be root to uninstall this product."
+  echo ""
+  exit
+fi
+
+if [ -f /opt/DigitalPersona/UareUSDK/redist/init-script-functions ]; then
+	. /opt/DigitalPersona/UareUSDK/redist/init-script-functions
+else
+	echo "File /opt/DigitalPersona/UareUSDK/redist/init-script-functions is"
+	echo "missing. Make sure DigitalPersona U.are.U SDK for Linux is properly"
+	echo "installed."
+	echo ""
+	exit 1
+fi
+
+echo "Removing all the objects and executables:"
+MAKEDIRS=" \
+  /opt/DigitalPersona/UareUSDK/Linux/Samples/UareUCaptureOnly \
+  /opt/DigitalPersona/UareUSDK/Linux/Samples/UareUSample \
+  /opt/DigitalPersona/UareUSDK/Linux/Samples/UareUSampleJava \
+  /opt/DigitalPersona/UareUSDK/Linux/Samples/UareUSampleJavaPOS \
+  /opt/DigitalPersona/UareUSDK/Linux/drivers/source/usbdpfp"
+  
+for d in ${MAKEDIRS}; do
+  if [ -f "$d/Makefile" ]; then
+    make clean -C "$d"
+    echo " "
+  fi
+done
+
+
+echo "Removing links in /usr/lib and /usr/include..."
+LINKS=`find /usr/lib*/* -maxdepth 0 -lname '/opt/DigitalPersona/UareUSDK/*'`
+if [ -n "$LINKS" ]; then
+  rm $LINKS 2>/dev/null
+fi
+
+if [ -L /usr/include/DigitalPersona ]; then
+  rm /usr/include/DigitalPersona
+fi
+
+echo "Done"
+
+echo "Removing DigitalPersona kernel module:"
+if [ -s /etc/init.d/usbdpfp-modprobe ]; then
+  LINKS=`find /etc/rc*/* -maxdepth 0 -lname '../init.d/usbdpfp-modprobe'`
+  rm $LINKS /etc/init.d/usbdpfp-modprobe
+fi
+
+DRIVER=`find /lib/modules -name mod_usbdpfp.ko`
+if [ "$DRIVER" != "" ]; then
+  modprobe -r -q mod_usbdpfp 2>/dev/null
+  rm $DRIVER
+  /sbin/depmod
+fi
+
+if [ -s /etc/udev/rules.d/40-usbdpfp.rules ]; then
+  rm /etc/udev/rules.d/40-usbdpfp.rules
+fi
+
+if [ -s /etc/udev/rules.d/99-dpuvc.rules ]; then
+  rm /etc/udev/rules.d/99-dpuvc.rules
+fi
+
+echo "Removing usbdpfp:"
+cleanup_init       usbdpfp
+remove_init_script usbdpfp
+
+CONTENTFILE="/opt/DigitalPersona/UareUSDK/.filelist-uareu"
+CONTENT=""
+OLDPATH=`pwd`
+cd /opt
+if [ -f $CONTENTFILE ]; then
+  CONTENT=`sort -sr $CONTENTFILE`
+  for i in $CONTENT; do
+    if [ -d $i ]; then
+      rmdir $i 2>/dev/null
+    else
+      rm -f $i
+    fi
+  done
+  rm $CONTENTFILE
+fi
+cd $OLDPATH
+
+if [ -z "$CONTENT" ]; then
+  echo ""
+  echo "Files under /opt/DigitalPersona/UareUSDK were not installed using the"
+  echo "SDK installer. You can manually remove /opt/DigitalPersona/UareUSDK"
+  echo "directory if needed."
+  echo ""
+fi
+
+echo "Clean up /opt/DigitalPersona/UareUSDK:"
+if [ -h /opt/DigitalPersona/UareUSDK/Linux/lib/lib ]; then
+  rm /opt/DigitalPersona/UareUSDK/Linux/lib/lib
+fi
+if [ -d /opt/DigitalPersona/UareUSDK/Linux/lib ]; then
+  rmdir /opt/DigitalPersona/UareUSDK/Linux/lib
+fi
+if [ -L /opt/DigitalPersona/UareUSDK/bin/dpuvccfg ]; then
+  rm /opt/DigitalPersona/UareUSDK/bin/dpuvccfg
+fi
+if [ -d /opt/DigitalPersona/UareUSDK/bin ]; then
+  rmdir /opt/DigitalPersona/UareUSDK/bin
+fi
+
+if [ -d /opt/DigitalPersona/UareUSDK/Linux/drivers ]; then
+  if [ "`ls -a /opt/DigitalPersona/UareUSDK/Linux/drivers | wc -l`" = "2" ]; then
+    rmdir /opt/DigitalPersona/UareUSDK/Linux/drivers
+  fi
+fi
+
+cd /opt
+
+if [ -d /opt/DigitalPersona/UareUSDK/scripts ]; then
+  cd /opt/DigitalPersona/UareUSDK/scripts
+  rm 40-usbdpfp.rules usbdpfp
+  cd /opt
+  if [ "`ls -a /opt/DigitalPersona/UareUSDK/scripts | wc -l`" = "2" ]; then
+    rmdir /opt/DigitalPersona/UareUSDK/scripts
+  fi
+fi
+
+if [ -d /opt/DigitalPersona/UareUSDK/redist ]; then
+  rm -rf /opt/DigitalPersona/UareUSDK/redist
+fi
+
+if [ -f /opt/DigitalPersona/UareUSDK/uninstall ]; then
+  rm /opt/DigitalPersona/UareUSDK/uninstall
+fi
+
+if [ -d /opt/DigitalPersona/UareUSDK/Linux ]; then
+  if [ "`ls -a /opt/DigitalPersona/UareUSDK/Linux | wc -l`" = "2" ]; then
+    rmdir /opt/DigitalPersona/UareUSDK/Linux
+  fi
+fi
+
+if [ "`ls -a /opt/DigitalPersona/UareUSDK | wc -l`" = "2" ]; then
+  rmdir /opt/DigitalPersona/UareUSDK
+fi
+
+if [ "`ls -a /opt/DigitalPersona | wc -l`" = "2" ]; then
+  rmdir /opt/DigitalPersona
+fi
+
+echo "Done"
+

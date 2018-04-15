@@ -1,0 +1,8 @@
+# Make the event device node associated with the DP readers accessible by
+# members of the video group.
+DRIVERS=="usb", ATTRS{idVendor}=="05ba", ATTRS{idProduct}=="000b", KERNEL=="event*", MODE="0666", GROUP="video"
+DRIVERS=="usb", ATTRS{idVendor}=="05ba", ATTRS{idProduct}=="000c", KERNEL=="event*", MODE="0666", GROUP="video"
+
+# Run the DP control helper for DP UVC devices.
+DRIVERS=="usb", ATTRS{idVendor}=="05ba", ATTRS{idProduct}=="000b", KERNEL=="video*", RUN+="/opt/DigitalPersona/UareUSDK/bin/dpuvccfg /dev/$name"
+DRIVERS=="usb", ATTRS{idVendor}=="05ba", ATTRS{idProduct}=="000c", KERNEL=="video*", RUN+="/opt/DigitalPersona/UareUSDK/bin/dpuvccfg /dev/$name"

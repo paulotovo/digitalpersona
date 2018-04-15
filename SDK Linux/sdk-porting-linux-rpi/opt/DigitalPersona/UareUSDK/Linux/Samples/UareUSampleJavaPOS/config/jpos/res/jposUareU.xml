@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE JposEntries PUBLIC "-//JavaPOS//DTD//EN"
+                             "jpos/res/jcl.dtd">
+<JposEntries>
+<!--Saved by JavaPOS jpos.config/loader (JCL) version 2.2.0 on 9/25/12 9:32 AM-->
+    
+    <JposEntry logicalName="DPFingerprintReader">
+        <creation factoryClass="com.digitalpersona.javapos.services.biometrics.ServiceInstanceFactory" serviceClass="com.digitalpersona.javapos.services.biometrics.UAREUReader"/>
+        <vendor name="DigitalPersona, Inc." url="http://www.digitalpersona.com/"/>
+        <jpos category="Biometrics" version="101300"/>
+        <product description="U.are.U Fingerprint Reader" name="U.are.U Reader" url="http://www.digitalpersona.com/"/>
+
+        <!--Other non JavaPOS required property (mostly vendor properties and bus specific properties i.e. RS232 )-->
+</JposEntry>
+    
+</JposEntries>

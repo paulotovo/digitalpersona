@@ -1,0 +1,23 @@
+var searchData=
+[
+  ['dpfj_5fcandidate',['dpfj_candidate',['../structdpfj__candidate.html',1,'']]],
+  ['dpfj_5ffid_5frecord_5fparams',['dpfj_fid_record_params',['../structdpfj__fid__record__params.html',1,'']]],
+  ['dpfj_5ffid_5fview_5fparams',['dpfj_fid_view_params',['../structdpfj__fid__view__params.html',1,'']]],
+  ['dpfj_5ffmd_5frecord_5fparams',['dpfj_fmd_record_params',['../structdpfj__fmd__record__params.html',1,'']]],
+  ['dpfj_5ffmd_5fview_5fparams',['dpfj_fmd_view_params',['../structdpfj__fmd__view__params.html',1,'']]],
+  ['dpfj_5fver_5finfo',['dpfj_ver_info',['../structdpfj__ver__info.html',1,'']]],
+  ['dpfj_5fversion',['dpfj_version',['../structdpfj__version.html',1,'']]],
+  ['dpfpdd_5fcapture_5fcallback_5fdata_5f0',['dpfpdd_capture_callback_data_0',['../structdpfpdd__capture__callback__data__0.html',1,'']]],
+  ['dpfpdd_5fcapture_5fparam',['dpfpdd_capture_param',['../structdpfpdd__capture__param.html',1,'']]],
+  ['dpfpdd_5fcapture_5fresult',['dpfpdd_capture_result',['../structdpfpdd__capture__result.html',1,'']]],
+  ['dpfpdd_5fdev_5fcaps',['dpfpdd_dev_caps',['../structdpfpdd__dev__caps.html',1,'']]],
+  ['dpfpdd_5fdev_5finfo',['dpfpdd_dev_info',['../structdpfpdd__dev__info.html',1,'']]],
+  ['dpfpdd_5fdev_5fstatus',['dpfpdd_dev_status',['../structdpfpdd__dev__status.html',1,'']]],
+  ['dpfpdd_5fhw_5fdescr',['dpfpdd_hw_descr',['../structdpfpdd__hw__descr.html',1,'']]],
+  ['dpfpdd_5fhw_5fid',['dpfpdd_hw_id',['../structdpfpdd__hw__id.html',1,'']]],
+  ['dpfpdd_5fhw_5fversion',['dpfpdd_hw_version',['../structdpfpdd__hw__version.html',1,'']]],
+  ['dpfpdd_5fimage_5finfo',['dpfpdd_image_info',['../structdpfpdd__image__info.html',1,'']]],
+  ['dpfpdd_5fiomap',['dpfpdd_iomap',['../structdpfpdd__iomap.html',1,'']]],
+  ['dpfpdd_5fver_5finfo',['dpfpdd_ver_info',['../structdpfpdd__ver__info.html',1,'']]],
+  ['dpfpdd_5fversion',['dpfpdd_version',['../structdpfpdd__version.html',1,'']]]
+];
