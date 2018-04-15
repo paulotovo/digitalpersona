@@ -117,6 +117,13 @@
 #endif
 #include <asm/uaccess.h>        
 
+// Added support for kernel version 4.14.30 by Paulo Tovo
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 11, 0)
+#include <linux/sched/signal.h>
+#include <linux/uaccess.h>
+#endif
+
+
 #include "usbdpfp.h"
 
 
